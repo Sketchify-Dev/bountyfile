@@ -1,0 +1,32 @@
+version: 1
+defaults:
+  payment:
+    mintAddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    amount: "25.00"
+  minSubmissionAmount: "5.00"
+  tags: ["good-first-issue"]
+bounties:
+  - key: fix-flaky-auth-test
+    title: "Fix flaky auth session test"
+    content: "<p>Stabilize auth session test: retry helper, seed RNG, expiry edge cases. Proof: green CI link + diff.</p>"
+    tags: ["testing", "typescript"]
+    payment:
+      mintAddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      amount: "30.00"
+    minSubmissionAmount: "5.00"
+  - key: docs-webhook-guide
+    title: "Write webhook retry guide"
+    content: "<p>Document webhook retries: backoff table, idempotency-key header, replay example with curl.</p>"
+    tags: ["docs"]
+    payment:
+      mintAddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      amount: "20.00"
+    minSubmissionAmount: "5.00"
+  - key: already-synced-bounty
+    title: "Already synced bounty"
+    content: "<p>Up to date content</p>"
+    tags: ["docs"]
+    payment:
+      mintAddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      amount: "25.00"
+    minSubmissionAmount: "5.00"

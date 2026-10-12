@@ -1,26 +1,32 @@
 {
-  "name": "gibwork-hackathon",
+  "name": "bountyfile",
   "version": "0.1.0",
-  "private": true,
+  "description": "Turn repo TODOs into funded Gibwork bounties, reviewed in your terminal. Bountyfile-as-code with dry-run plans and safe sync.",
+  "type": "module",
+  "bin": {
+    "bountyfile": "./dist/cli.js"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "demo": "bash demo.sh"
   },
   "dependencies": {
-    "next": "16.4.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "@gibwork/sdk": "^0.2.0",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "yaml": "^2.6.1"
   },
   "devDependencies": {
-    "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.0",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "@types/node": "^20.12.0",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
 }

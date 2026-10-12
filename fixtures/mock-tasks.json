@@ -1,0 +1,14 @@
+[
+  {
+    "taskId": "mock-task-1",
+    "title": "Fix flaky auth session test",
+    "content": "<p>old content: needs refresh</p>",
+    "status": "in progress"
+  },
+  {
+    "taskId": "mock-task-9",
+    "title": "Already synced bounty",
+    "content": "<p>Up to date content</p>",
+    "status": "in progress"
+  }
+]

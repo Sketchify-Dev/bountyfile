@@ -1,0 +1,32 @@
+== 1. validate ==
+OK: Bountyfile.yaml: 3 bounties valid.
+  - fix-flaky-auth-test: "Fix flaky auth session test" (30.00 USDC)
+  - docs-webhook-guide: "Write webhook retry guide" (20.00 USDC)
+  - already-synced-bounty: "Already synced bounty" (25.00 USDC)
+
+== 2. scan ==
+Found 3 markers in src; 3 proposals.
+  - fixme-hack-markers-and-propose-bounties-1: TODO: /FIXME/HACK markers and propose bounties.") (cli.ts:62)
+  - fixme-hack-s-s-2: TODO: |FIXME|HACK)\s*:?\s*(.+)/; (scanner.ts:5)
+  - fixme-hack-3: TODO: " | "FIXME" | "HACK"; (types.ts:54)
+
+== 3. plan ==
+Plan for Bountyfile.yaml (2026-10-12T09:16:20.247Z)
+  [UPDATE] fix-flaky-auth-test: Will update mock-task-1: content.
+  [CREATE] docs-webhook-guide: Will create bounty "Write webhook retry guide" (20.00 USDC).
+  [NOOP  ] already-synced-bounty: Up to date (mock-task-9).
+Summary: 1 create, 1 update, 1 noop.
+
+== 4. sync (dry-run, safe) ==
+Plan for Bountyfile.yaml (2026-10-12T09:16:21.151Z)
+  [UPDATE] fix-flaky-auth-test: Will update mock-task-1: content.
+  [CREATE] docs-webhook-guide: Will create bounty "Write webhook retry guide" (20.00 USDC).
+  [NOOP  ] already-synced-bounty: Up to date (mock-task-9).
+Summary: 1 create, 1 update, 1 noop.
+
+Dry run only: no changes made. Re-run with --apply --yes to execute.
+
+== 5. report ==
+Wrote examples/report.md (1 create, 1 update, 1 noop)
+
+Demo complete. Artifact: examples/report.md

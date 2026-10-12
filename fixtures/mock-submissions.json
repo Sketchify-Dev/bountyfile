@@ -1,0 +1,10 @@
+{
+  "taskId": "mock-task-1",
+  "results": [
+    { "id": "sub-1", "status": "pending", "content": "<p>Fix PR: https://example.com/pr/42</p>" },
+    { "id": "sub-2", "status": "approved", "content": "<p>Docs update</p>" }
+  ],
+  "page": 1,
+  "limit": 15,
+  "total": 2
+}
