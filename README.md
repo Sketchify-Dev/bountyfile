@@ -267,7 +267,11 @@ npm test            # node:test over tests/
 
 Covered: Bountyfile loading and rejection paths (`tests/bountyfile.test.ts`), plan classification into create/update/noop (`tests/planner.test.ts`), marker scanning and proposal shaping (`tests/scanner.test.ts`). The demo script exercises the whole mock workflow end to end.
 
-Live verification status: the SDK import and client wiring are verified in this repo, but no live funding transaction has been executed here, deliberately, to avoid moving real funds during development. Run `browse` and `plan` with a key set to verify read paths before any funded `sync`.
+Live verification status (2026-10-12, stage): `browse` returns real stage
+bounties and `plan` diffs a fresh wallet correctly (all creates, as expected),
+using a mobile-exported key via the official CLI profile setup. No live funding
+transaction has been executed, deliberately, to avoid moving real funds during
+development. Always run live `browse` and `plan` before any funded `sync`.
 
 ## Limitations
 
