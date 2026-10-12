@@ -22,13 +22,14 @@ program
 
 function clientFromGlobals() {
   const opts = program.opts<{ mock: boolean; prod: boolean }>();
-  const mock = opts.mock || !process.env.SOLANA_PRIVATE_KEY;
-  if (!opts.mock && !process.env.SOLANA_PRIVATE_KEY) {
-    warn("SOLANA_PRIVATE_KEY not set: falling back to --mock mode. Set it in .env for live ops.");
+  const key = process.env.SOLANA_PRIVATE_KEY ?? process.env.GIBWORK_PRIVATE_KEY;
+  const mock = opts.mock || !key;
+  if (!opts.mock && !key) {
+    warn("No key set (SOLANA_PRIVATE_KEY or GIBWORK_PRIVATE_KEY): falling back to --mock mode. See .env.example for live setup.");
   }
   return makeClient({
     mock,
-    privateKey: process.env.SOLANA_PRIVATE_KEY,
+    privateKey: key,
     production: opts.prod,
   });
 }

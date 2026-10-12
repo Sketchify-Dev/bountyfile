@@ -37,7 +37,12 @@ bountyfile closes that gap from inside the terminal:
 4. **Fund on purpose.** `sync --apply --yes` executes the plan through the official SDK. Without `--yes`, it refuses. Funding is a deliberate act, never a side effect.
 5. **Keep receipts.** `report` writes a markdown table you can paste into PRs or store under `examples/`.
 
-Existing Gibwork tooling covers raw list/create calls. bountyfile is the layer above: repo-aware lifecycle management with declarative specs, content diffing, funding gates, and reviewable artifacts.
+Existing Gibwork tooling covers raw list/create calls, and community bounties-as-code
+tools start from a hand-written YAML you maintain by hand. bountyfile flips the
+starting point: `scan` harvests TODO markers from the code into proposals, so
+the backlog writes itself and the YAML becomes the review step, not the authoring
+step. Same declarative finish, different (and lazier) beginning, plus submission
+triage and markdown receipts for the review loop.
 
 ## How it works
 
@@ -92,7 +97,8 @@ bash demo.sh
 | Variable | Default | Meaning |
 |---|---|---|
 | `GIBWORK_MOCK` | `true` when no key is set | `true` runs fully offline against `fixtures/`. No network, no keys, no funds move |
-| `SOLANA_PRIVATE_KEY` | unset | Base58 seed/secret or JSON byte array (32 or 64 bytes). Setting it enables live mode |
+| `GIBWORK_PRIVATE_KEY` | unset | Preferred live key: same value the official CLI uses (base58 or JSON array). Setting it enables live mode |
+| `SOLANA_PRIVATE_KEY` | unset | Alternate live key (SDK style). Either key variable works |
 | `GIBWORK_PROD` | `false` | `false` targets Gibwork stage, `true` targets production |
 | `NO_COLOR` | unset | Set to any value to disable colored terminal output |
 
@@ -103,6 +109,25 @@ Global flags:
 | `--mock` | Force offline mode for one command |
 | `--prod` | Target production for one command |
 | `--json` | Emit machine-readable JSON instead of human tables |
+
+## Works with the official CLI
+
+bountyfile speaks to Gibwork through the official SDK, so it composes with the
+[official CLI](https://www.npmjs.com/package/@gibwork/cli) instead of competing
+with it. The mods recommend pointing the CLI at stage, and bountyfile follows
+the same default. Recommended setup:
+
+```bash
+npm install --global @gibwork/cli
+chmod 600 ~/.config/gibwork/id.json   # owner-only keypair file, exported from the Gibwork mobile app
+gibwork --profile stage config set keypair-path ~/.config/gibwork/id.json
+gibwork --profile stage wallet doctor
+```
+
+bountyfile reads the same secret from `GIBWORK_PRIVATE_KEY`, so one export
+serves both tools. Key safety is on you: a leaked key moves real funds and
+nobody can reverse that. Never commit keys, never paste them on screen in a
+demo recording, and prefer the keypair file over raw environment values.
 
 ## Command reference
 
