@@ -5,7 +5,7 @@ export GIBWORK_MOCK=true
 echo "== 1. validate =="
 node dist/cli.js validate -f Bountyfile.yaml
 echo; echo "== 2. scan =="
-node dist/cli.js scan --dir src
+node dist/cli.js scan --dir examples/todo-sample
 echo; echo "== 3. plan =="
 node dist/cli.js plan -f Bountyfile.yaml
 echo; echo "== 4. sync (dry-run, safe) =="

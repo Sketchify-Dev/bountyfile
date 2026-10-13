@@ -3,7 +3,8 @@ import { join, relative } from "node:path";
 import type { ScanHit, ScanProposal } from "./types.js";
 
 const PATTERN = /(TODO|FIXME|HACK)\s*:?\s*(.+)/;
-const SKIP_DIRS = new Set(["node_modules", "dist", ".git", ".next", "coverage"]);
+export const SKIP_DIRS = ["node_modules", "dist", ".git", ".next", "coverage"];
+const SKIP_SET = new Set(SKIP_DIRS);
 const SCAN_EXTS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".py", ".go", ".rs", ".md"]);
 
 function slugify(s: string): string {
@@ -16,7 +17,7 @@ function slugify(s: string): string {
 
 export function scanDir(root: string, dir = root, hits: ScanHit[] = []): ScanHit[] {
   for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry)) continue;
+    if (SKIP_SET.has(entry)) continue;
     const full = join(dir, entry);
     const st = statSync(full);
     if (st.isDirectory()) {

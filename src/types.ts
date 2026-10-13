@@ -39,6 +39,10 @@ export interface PlanAction {
   detail: string;
   /** Field-level diff for updates. */
   changes?: string[];
+  /** Reward amount decimal string, for funding totals. */
+  amount?: string;
+  /** Remote task id this action targets, when matched. */
+  remoteTaskId?: string;
 }
 
 export interface Plan {

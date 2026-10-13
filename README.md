@@ -62,15 +62,27 @@ node dist/cli.js sync -f Bountyfile.yaml --apply --yes
 node dist/cli.js report -f Bountyfile.yaml -o examples/report.md
 ```
 
-`plan` output looks like this:
+`plan` output looks like this (box-drawing tables on a capable terminal, plain ASCII when piped):
 
 ```
-Plan for Bountyfile.yaml (2026-10-12T09:26:44Z)
-  [UPDATE] fix-flaky-auth-test: Will update mock-task-1: content.
-  [CREATE] docs-webhook-guide: Will create bounty "Write webhook retry guide" (20.00 USDC).
-  [NOOP  ] already-synced-bounty: Up to date (mock-task-9).
+bountyfile plan  Bountyfile.yaml · mock (offline) · dry run
+Plan for Bountyfile.yaml (2026-10-13T02:48:24Z)
++----------+-----------------------+-----------------------------+------------+-------------+
+| Action   | Key                   | Title                       | Reward     | Remote      |
++----------+-----------------------+-----------------------------+------------+-------------+
+| UPDATE   | fix-flaky-auth-test   | Fix flaky auth session test | 30.00 USDC | mock-task-1 |
+| CREATE   | docs-webhook-guide    | Write webhook retry guide   | 20.00 USDC | new         |
+| NOOP     | already-synced-bounty | Already synced bounty       | 25.00 USDC | mock-task-9 |
++----------+-----------------------+-----------------------------+------------+-------------+
 Summary: 1 create, 1 update, 1 noop.
+New funding: 20.00 USDC across 1 new bounty. Updates are content-only and move no funds.
+Dry run: no changes made on Gibwork.
+Next: bountyfile sync -f Bountyfile.yaml --apply --yes  (only when the table above looks right)
 ```
+
+Every command follows the same shape: a `bountyfile <cmd>` header with
+mode context, a table for anything comparable, an honest summary, and a
+`Next:` hint. `--json` output is unchanged pure JSON for scripts.
 
 ## Installation
 
@@ -101,6 +113,7 @@ bash demo.sh
 | `SOLANA_PRIVATE_KEY` | unset | Alternate live key (SDK style). Either key variable works |
 | `GIBWORK_PROD` | `false` | `false` targets Gibwork stage, `true` targets production |
 | `NO_COLOR` | unset | Set to any value to disable colored terminal output |
+| `BOUNTYFILE_ASCII` | unset | Set to `1` to force plain ASCII tables instead of box-drawing |
 
 Global flags:
 
@@ -251,9 +264,10 @@ Validation rules: keys must be unique lowercase slugs, titles 8 to 140 chars, co
 | Scanner | `src/scanner.ts` | Marker search plus proposal shaping |
 | Client | `src/client.ts` | `MockClient` (offline fixtures) and `LiveClient` (official SDK wrapper) |
 | Planner | `src/planner.ts` | Pure diff: create, update, noop. Fully unit tested |
-| Reporter | `src/reporter.ts` | Markdown and terminal rendering |
+| Reporter | `src/reporter.ts` | Plan tables, funding totals, markdown receipts |
+| Table | `src/table.ts` | Box-drawing renderer with ASCII fallback, width-aware truncation |
 | CLI | `src/cli.ts` | `commander` wiring, flags, confirmation gates |
-| Output | `src/output.ts` | Human tables, JSON mode, TTY-aware color |
+| Output | `src/output.ts` | Headers, semantic color, JSON mode, TTY/NO_COLOR gating |
 
 **Gibwork integration:** `LiveClient` uses [`@gibwork/sdk@0.2.0`](https://www.npmjs.com/package/@gibwork/sdk) via `createGibworkClient` from `@gibwork/sdk/node`, wallet-authenticated with `SOLANA_PRIVATE_KEY`. Methods used: `tasks.list`, `tasks.listAvailable`, `tasks.get`, `tasks.create`, `tasks.update`, `submissions.list`. References: [developer docs](https://docs.gib.work/info/how-it-works/for-developers), [API reference](https://gibwork.readme.io/).
 
@@ -265,7 +279,7 @@ npm run build       # tsc into dist/
 npm test            # node:test over tests/
 ```
 
-Covered: Bountyfile loading and rejection paths (`tests/bountyfile.test.ts`), plan classification into create/update/noop (`tests/planner.test.ts`), marker scanning and proposal shaping (`tests/scanner.test.ts`). The demo script exercises the whole mock workflow end to end.
+Covered: Bountyfile loading and rejection paths (`tests/bountyfile.test.ts`), plan classification into create/update/noop (`tests/planner.test.ts`), marker scanning and proposal shaping (`tests/scanner.test.ts`), table rendering with truncation, empty results, ASCII fallback, and JSON purity (`tests/table.test.ts`), plus funding totals and markdown receipts (`tests/reporter.test.ts`). The demo script exercises the whole mock workflow end to end.
 
 Live verification status (2026-10-12, stage): `browse` returns real stage
 bounties and `plan` diffs a fresh wallet correctly (all creates, as expected),

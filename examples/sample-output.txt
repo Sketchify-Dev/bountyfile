@@ -1,32 +1,60 @@
 == 1. validate ==
-OK: Bountyfile.yaml: 3 bounties valid.
-  - fix-flaky-auth-test: "Fix flaky auth session test" (30.00 USDC)
-  - docs-webhook-guide: "Write webhook retry guide" (20.00 USDC)
-  - already-synced-bounty: "Already synced bounty" (25.00 USDC)
+bountyfile validate  Bountyfile.yaml
+PASS: Bountyfile.yaml (3 bounties, all checks green).
++-----------------------+-----------------------------+------------+
+| Key                   | Title                       | Reward     |
++-----------------------+-----------------------------+------------+
+| fix-flaky-auth-test   | Fix flaky auth session test | 30.00 USDC |
+| docs-webhook-guide    | Write webhook retry guide   | 20.00 USDC |
+| already-synced-bounty | Already synced bounty       | 25.00 USDC |
++-----------------------+-----------------------------+------------+
+Next: bountyfile plan -f Bountyfile.yaml  (read-only preview before any funding)
 
 == 2. scan ==
-Found 3 markers in src; 3 proposals.
-  - fixme-hack-markers-and-propose-bounties-1: TODO: /FIXME/HACK markers and propose bounties.") (cli.ts:62)
-  - fixme-hack-s-s-2: TODO: |FIXME|HACK)\s*:?\s*(.+)/; (scanner.ts:5)
-  - fixme-hack-3: TODO: " | "FIXME" | "HACK"; (types.ts:54)
+bountyfile scan  examples/todo-sample
+Found 2 markers in examples/todo-sample: 2 proposals.
++----------+----------+----------+----------------------------------------------+
+| #        | Type     | Location | Title                                        |
++----------+----------+----------+----------------------------------------------+
+| 1        | TODO     | app.ts:4 | TODO: retry once on 429 with exponential ba… |
+| 2        | FIXME    | app.ts:9 | FIXME: drop jobs when the queue is full ins… |
++----------+----------+----------+----------------------------------------------+
+Skipped dirs: node_modules, dist, .git, .next, coverage.
+Next: copy chosen proposals into Bountyfile.yaml, then run: bountyfile validate -f Bountyfile.yaml
 
 == 3. plan ==
-Plan for Bountyfile.yaml (2026-10-12T09:16:20.247Z)
-  [UPDATE] fix-flaky-auth-test: Will update mock-task-1: content.
-  [CREATE] docs-webhook-guide: Will create bounty "Write webhook retry guide" (20.00 USDC).
-  [NOOP  ] already-synced-bounty: Up to date (mock-task-9).
+bountyfile plan  Bountyfile.yaml · mock (offline) · dry run
+Plan for Bountyfile.yaml (2026-10-13T02:48:24.533Z)
++----------+-----------------------+-----------------------------+------------+-------------+
+| Action   | Key                   | Title                       | Reward     | Remote      |
++----------+-----------------------+-----------------------------+------------+-------------+
+| UPDATE   | fix-flaky-auth-test   | Fix flaky auth session test | 30.00 USDC | mock-task-1 |
+| CREATE   | docs-webhook-guide    | Write webhook retry guide   | 20.00 USDC | new         |
+| NOOP     | already-synced-bounty | Already synced bounty       | 25.00 USDC | mock-task-9 |
++----------+-----------------------+-----------------------------+------------+-------------+
 Summary: 1 create, 1 update, 1 noop.
+New funding: 20.00 USDC across 1 new bounty. Updates are content-only and move no funds.
+Dry run: no changes made on Gibwork.
+Next: bountyfile sync -f Bountyfile.yaml --apply --yes  (only when the table above looks right)
 
 == 4. sync (dry-run, safe) ==
-Plan for Bountyfile.yaml (2026-10-12T09:16:21.151Z)
-  [UPDATE] fix-flaky-auth-test: Will update mock-task-1: content.
-  [CREATE] docs-webhook-guide: Will create bounty "Write webhook retry guide" (20.00 USDC).
-  [NOOP  ] already-synced-bounty: Up to date (mock-task-9).
+bountyfile sync  Bountyfile.yaml · mock (offline) · dry run
+Sync preview for Bountyfile.yaml (2026-10-13T02:48:24.756Z)
++----------+-----------------------+-----------------------------+------------+-------------+
+| Action   | Key                   | Title                       | Reward     | Remote      |
++----------+-----------------------+-----------------------------+------------+-------------+
+| UPDATE   | fix-flaky-auth-test   | Fix flaky auth session test | 30.00 USDC | mock-task-1 |
+| CREATE   | docs-webhook-guide    | Write webhook retry guide   | 20.00 USDC | new         |
+| NOOP     | already-synced-bounty | Already synced bounty       | 25.00 USDC | mock-task-9 |
++----------+-----------------------+-----------------------------+------------+-------------+
 Summary: 1 create, 1 update, 1 noop.
-
+New funding: 20.00 USDC across 1 new bounty. Updates are content-only and move no funds.
 Dry run only: no changes made. Re-run with --apply --yes to execute.
+Next: bountyfile sync -f Bountyfile.yaml --apply --yes
 
 == 5. report ==
-Wrote examples/report.md (1 create, 1 update, 1 noop)
+bountyfile report  Bountyfile.yaml · mock (offline)
+Wrote examples/report.md (1 create, 1 update, 1 noop).
+Next: paste examples/report.md into the PR for review
 
 Demo complete. Artifact: examples/report.md

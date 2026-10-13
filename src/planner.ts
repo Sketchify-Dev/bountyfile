@@ -14,12 +14,20 @@ export function buildPlan(source: string, local: Bountyfile, remote: RemoteTask[
         key: b.key,
         title: b.title,
         detail: `Will create bounty "${b.title}" (${b.payment.amount} USDC).`,
+        amount: b.payment.amount,
       };
     }
     const changes: string[] = [];
     if (normalize(match.content) !== normalize(b.content)) changes.push("content");
     if (changes.length === 0) {
-      return { type: "noop" as const, key: b.key, title: b.title, detail: `Up to date (${match.taskId}).` };
+      return {
+        type: "noop" as const,
+        key: b.key,
+        title: b.title,
+        detail: `Up to date (${match.taskId}).`,
+        amount: b.payment.amount,
+        remoteTaskId: match.taskId,
+      };
     }
     return {
       type: "update" as const,
@@ -27,6 +35,8 @@ export function buildPlan(source: string, local: Bountyfile, remote: RemoteTask[
       title: b.title,
       detail: `Will update ${match.taskId}: ${changes.join(", ")}.`,
       changes,
+      amount: b.payment.amount,
+      remoteTaskId: match.taskId,
     };
   });
 
