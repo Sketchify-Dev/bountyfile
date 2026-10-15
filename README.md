@@ -281,11 +281,14 @@ npm test            # node:test over tests/
 
 Covered: Bountyfile loading and rejection paths (`tests/bountyfile.test.ts`), plan classification into create/update/noop (`tests/planner.test.ts`), marker scanning and proposal shaping (`tests/scanner.test.ts`), table rendering with truncation, empty results, ASCII fallback, and JSON purity (`tests/table.test.ts`), plus funding totals and markdown receipts (`tests/reporter.test.ts`). The demo script exercises the whole mock workflow end to end.
 
-Live verification status (2026-10-12, stage): `browse` returns real stage
+Live verification status (2026-10-15, stage): `browse` returns real stage
 bounties and `plan` diffs a fresh wallet correctly (all creates, as expected),
-using a mobile-exported key via the official CLI profile setup. No live funding
-transaction has been executed, deliberately, to avoid moving real funds during
-development. Always run live `browse` and `plan` before any funded `sync`.
+using a mobile-exported key via the official CLI profile setup. Live `sync
+--apply --yes` is honestly blocked: stage task creation returns HTTP 403 for
+this key, and the CLI reports per-item failures instead of partial success
+(see video). End-to-end execution is therefore demonstrated in mock mode
+(`bash demo.sh`, exit 0). Always run live `browse` and `plan` before any
+funded `sync`.
 
 ## Limitations
 
@@ -296,11 +299,21 @@ development. Always run live `browse` and `plan` before any funded `sync`.
 
 ## Demo
 
+Video walkthrough (setup through successful output): <https://youtu.be/MMNKS4o6bVI>
+
 ```bash
 bash demo.sh
 ```
 
 Runs validate, scan, plan, a safe dry-run sync, and report generation against mock data in about a minute. Full transcript: [`examples/sample-output.txt`](examples/sample-output.txt). Generated artifact: [`examples/report.md`](examples/report.md).
+
+Live stage `plan` with the funding table:
+
+![bountyfile plan on live stage](docs/screenshot-plan.png)
+
+Mock `sync --apply --yes` executing the same plan safely:
+
+![bountyfile sync apply in mock mode](docs/screenshot-sync.png)
 
 ## License
 
