@@ -315,6 +315,10 @@ Mock `sync --apply --yes` executing the same plan safely:
 
 ![bountyfile sync apply in mock mode](docs/screenshot-sync.png)
 
+Generated markdown receipt for PRs and records:
+
+![bountyfile report output](docs/screenshot-report.png)
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
